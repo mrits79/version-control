@@ -18,15 +18,11 @@ jobs:
     - name: Generate Git Tag
       id: generate_tag
       run: |
-        VERSION_PREFIX="v"
-        VERSION_MAJOR_MINOR="0.0"
-        VERSION_PATCH=$(git tag --list "${VERSION_PREFIX}${VERSION_MAJOR_MINOR}.*" --sort=-version:refname | head -n 1 | grep -oE '[0-9]+$')
-        if [ -z "$VERSION_PATCH" ]; then
-          VERSION_PATCH=0
-        else
-          VERSION_PATCH=$((VERSION_PATCH + 1))
-        fi
-        NEW_TAG="${VERSION_PREFIX}${VERSION_MAJOR_MINOR}.${VERSION_PATCH}"
+        # get latest tag
+        version=$(git describe --tags `git rev-list --tags --max-count=1`)
+        # print latest
+        echo $version
+        NEW_TAG=$(echo "$version" | awk 'BEGIN{FS=OFS="."} {$3+=1} 1')
         echo "Generated new tag: $NEW_TAG"
         echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
 
