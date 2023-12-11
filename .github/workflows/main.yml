@@ -22,7 +22,7 @@ jobs:
         version=$(git describe --tags `git rev-list --tags --max-count=1`)
         # print latest
         echo $version
-        NEW_TAG=$(echo "$version" | awk 'BEGIN{FS=OFS="."} {$3+=1} 1')
+        NEW_TAG=$(echo "$version" | awk 'BEGIN{FS=OFS="."} {$4+=1} 1')
         echo "Generated new tag: $NEW_TAG"
         echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
 
